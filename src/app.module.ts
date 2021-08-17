@@ -1,8 +1,13 @@
 import { Module } from '@nestjs/common';
-import { OrdersModule } from './orders/orders.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { OrdersModule } from './api/orders/orders.module';
 
 @Module({
-  imports: [OrdersModule],
+  imports:
+  [
+    OrdersModule,
+    TypeOrmModule.forRoot()
+  ],
   controllers: [],
   providers: [],
 })
