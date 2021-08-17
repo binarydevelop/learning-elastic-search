@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { OrdersRepository } from './dto/orders.repository';
+import { OrdersRepository } from './orders.repository';
 import { OrdersController } from './orders.controller';
 import { OrdersService } from './orders.service';
+import { OrderCreatedListener } from './listeners/order-created.listener';
 
 @Module({
   imports: [
@@ -10,6 +11,9 @@ import { OrdersService } from './orders.service';
     [OrdersRepository]
   )],
   controllers: [OrdersController],
-  providers: [OrdersService]
+  providers: [
+    OrdersService, 
+    OrderCreatedListener
+  ]
 })
 export class OrdersModule {}
