@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { OrdersModule } from './api/orders/orders.module';
 
@@ -6,7 +7,8 @@ import { OrdersModule } from './api/orders/orders.module';
   imports:
   [
     OrdersModule,
-    TypeOrmModule.forRoot()
+    TypeOrmModule.forRoot(),
+    EventEmitterModule.forRoot()
   ],
   controllers: [],
   providers: [],
