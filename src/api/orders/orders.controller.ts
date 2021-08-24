@@ -1,5 +1,6 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UploadedFile, UploadedFiles, UseInterceptors } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
+import { FilesInterceptor } from '@nestjs/platform-express';
 import { CreateOrderDto } from './dto/createOrder.dto';
 import { OrdersService } from './orders.service';
 
@@ -27,4 +28,10 @@ export class OrdersController {
             order
         }]
     }
+
+    @Post('upload-file')
+    @UseInterceptors(FilesInterceptor('imagw', undefined, {dest: './uploads', preservePath: true}))
+    async uploadedFile(@UploadedFiles() file: Express.Multer.File) {
+        console.log(file);
+}
 }
