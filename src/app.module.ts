@@ -6,7 +6,8 @@ import { OrdersModule } from './api/orders/orders.module';
 
 @Module({
   imports:
-  [ MulterModule.register({
+  [ 
+    MulterModule.register({
       dest: './uploads',
     }),
     OrdersModule,
