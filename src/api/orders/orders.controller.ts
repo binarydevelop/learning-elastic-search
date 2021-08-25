@@ -1,6 +1,7 @@
-import { Body, Controller, Get, Param, Post, Req, UploadedFile, UploadedFiles, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Req, Session, UploadedFile, UploadedFiles, UseInterceptors } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { FileFieldsInterceptor, FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
+import { request } from 'express';
 import { CreateOrderDto } from './dto/createOrder.dto';
 import { OrdersService } from './orders.service';
 
@@ -21,7 +22,8 @@ export class OrdersController {
     }
 
     @Get('/:id')
-    async getOrderById(@Param('id') id: string) {
+    async getOrderById(@Param('id') id: string, @Session() session: Record<string, any>, @Req() req: any) {
+        console.log(session);
         const order = await this.ordersService.getOrderById(id);
         return [{
             success: true,
