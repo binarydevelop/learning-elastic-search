@@ -1,7 +1,9 @@
-import { Body, Controller, Get, Param, Post, Req, Session, UploadedFile, UploadedFiles, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Render, Req, Res, Session, Sse, UploadedFile, UploadedFiles, UseInterceptors } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { FileFieldsInterceptor, FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { request } from 'express';
+import { Response } from 'express';
+import { interval, map, Observable } from 'rxjs';
 import { CreateOrderDto } from './dto/createOrder.dto';
 import { OrdersService } from './orders.service';
 
@@ -22,13 +24,10 @@ export class OrdersController {
     }
 
     @Get('/:id')
-    async getOrderById(@Param('id') id: string, @Session() session: Record<string, any>, @Req() req: any) {
-        console.log(session);
+    @Render('get-order')
+    async getOrderById(@Param('id') id: string, @Session() session: Record<string, any>, @Res() res: Response) {
         const order = await this.ordersService.getOrderById(id);
-        return [{
-            success: true,
-            order
-        }]
+        return {order}
     }
 
     @Get('get-all/:id')
@@ -87,6 +86,17 @@ export class OrdersController {
             Filesdata
         }]
     }
-    
 
+  @Get('mvc/index')
+  @Render('index')
+  root() {
+    return { message: 'HandleBars' };
+  }
+
+  @Sse('sse')
+  sse(): Observable<MessageEvent> {
+      return interval(1000).pipe(
+        map((_) => ({ data: { hello: 'world' } } as MessageEvent)),
+      );
+  }
 }
